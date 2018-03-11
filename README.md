@@ -1,2 +1,27 @@
-# projman
-Digital Domain hackathon project
+As we were told to do, my goal was to keep my API part and CLI part separate.
+
+In my API, I've this structre
+
+projman
+--src
+--pm
+--projman
+  --common
+  --create
+  --delete
+  --list_projects
+  --delete
+
+So for API(projman/projman) I've
+All common functions are under common module like
+	Getting types of project we can create like houdini, maya
+	Getting if we've yaml config files available for each type or not
+	Getting project location
+
+and other modules were used for creating,deleting and listing projects.
+
+We only need to import the API(projman) in pm file and all necessary functions for managing project will be available under the projman namespace, so we don't have to
+import individual modules under API.
+
+I had planned to implement CLI part in the pm file.
+	 
