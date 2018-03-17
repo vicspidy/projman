@@ -31,15 +31,15 @@ def get_args():
     describe_parser.set_defaults(func=projman.display_structre)
 
     args = pm_parser.parse_args()
-    print args
+    # print args
     projman.get_project_location(args)
     args.func(args)
 
 if __name__ == '__main__':
-    # try:
-    args = get_args()
-    # except:
-    #     sys.stderr.write('Error in command. Please refer to help of command.')
-    #     sys.exit(4)
+    try:
+        args = get_args()
+    except:
+        sys.stderr.write('Error in command. Please refer to help of command.')
+        sys.exit(4)
 
 
