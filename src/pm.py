@@ -1,36 +1,45 @@
+#! /usr/bin/env python
+
 import argparse
 import projman
-import time
+import sys
 
-# create -p D:\ashish\Hackathon\projman\projects
+default_project_location = projman.PROJECT_LOCATION
 
 def get_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-t", "--type", help='Type of the project')
-    parser.add_argument("-p", "--path", help='Where to create the new projects')
-    # parser.add_argument("create", action='store_true')
-    # parser.add_argument("name", help='Name of new project')
-    # parser.add_argument("list", help='Lists all projects')
-    # parser.add_argument("-t", "--type", help='Lists all projects')
-    args = parser.parse_args()
+    pm_parser = argparse.ArgumentParser()
+    pm_parser.add_argument('-t', '--type', metavar='type', help='Project type', required=False)
+    pm_parser.add_argument('-p', '--path', metavar='path', help='Project creation path', required=False, default=default_project_location)
+
+    sub_parser = pm_parser.add_subparsers()
+
+    create_parser = sub_parser.add_parser('create', help='Manage Creation of projects')
+    create_parser.add_argument('name', metavar='name', help='Project name')
+    create_parser.set_defaults(func=projman.create_project)
+
+    list_parser = sub_parser.add_parser('list', help='Manage listing of projects')
+    list_parser.set_defaults(func=projman.list_projects)
+
+    delete_parser = sub_parser.add_parser('delete', help='Delete project')
+    delete_parser.add_argument('name', metavar='name', help='Project name to delete')
+    delete_parser.set_defaults(func=projman.delete_projects)
+
+    types_parser = sub_parser.add_parser('types', help='lists type of project you can create')
+    types_parser.set_defaults(func=projman.show_types)
+
+    describe_parser = sub_parser.add_parser('describe', help='Display folder structres of type of projects')
+    describe_parser.set_defaults(func=projman.display_structre)
+
+    args = pm_parser.parse_args()
     print args
-    return args
+    projman.get_project_location(args)
+    args.func(args)
 
 if __name__ == '__main__':
-    for i in projman.get_yaml_config():
-        for k, v in i.iteritems():
-            print k, v
-    new_project = projman.create_project('The Dark Knight')
-    # projman.create_dir_structre('houdini', new_project)
-    projman.create_dir_structre('maya', new_project)
-
-    projman.list_projects('houdini')
+    # try:
+    args = get_args()
+    # except:
+    #     sys.stderr.write('Error in command. Please refer to help of command.')
+    #     sys.exit(4)
 
 
-    # args = get_args()
-    # if args.type:
-    #     if args.create:
-    #         if args.path:
-    #             new_project = projman.create_project(args.name, args.path)
-    #         else:
-    #             new_project = projman.create_project(args.name)
