@@ -17,7 +17,7 @@ PROJECT_LOCATION = None
 def get_yaml_config():
     yaml_configs = list()
     if os.environ.get('PROJMAN_TEMPLATES'):
-        yaml_paths = os.environ['PROJMAN_TEMPLATES'].split(';')
+        yaml_paths = os.environ['PROJMAN_TEMPLATES'].split(':')
         for path in yaml_paths:
             if os.path.exists(path):
                 for type in ('*.yml', '*.yaml'):
